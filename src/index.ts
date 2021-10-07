@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import connectDB from "./Configs/mongodb";
 import router from "./Routes/index.routes";
 import Logger from './Configs/logger'
-import authenticationMiddleware from './Middlewares/authentication.middleware';
+import authenticationMiddleware from './Middlewares/Authentication.middleware';
 
 dotenv.config();
 connectDB();

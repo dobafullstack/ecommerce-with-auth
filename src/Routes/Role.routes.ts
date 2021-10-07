@@ -1,6 +1,6 @@
 import { Router } from "express";
 import PATH from "../Constants/path";
-import RoleController from "../Controllers/role.controller";
+import RoleController from "../Controllers/Role.controller";
 
 const router = Router();
 
