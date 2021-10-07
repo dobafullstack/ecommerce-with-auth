@@ -50,6 +50,7 @@ export default class RoleService {
             const role = await RoleModel.findById(role_id);
 
             lodash.extend(role, req.body);
+            role?.save();
 
             return CommonFunction.GetActionResult(200, {
                 message: "Update role success",

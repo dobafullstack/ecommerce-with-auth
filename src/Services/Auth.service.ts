@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import md5 from "md5";
 import RoleModel from "../Models/Role.model";
 import CommonFunction from "../Utils/CommonFunction";
+import TAG_DEFINE from "../Constants/define";
 
 export default class AuthService {
     //Login
@@ -64,9 +65,7 @@ export default class AuthService {
         try {
             await UserModel.create(req.body);
 
-            return CommonFunction.GetActionResult(201, {
-                message: "Register successful",
-            });
+            return CommonFunction.GetActionResult(201, TAG_DEFINE.RESULT.AUTH.REGISTER.SUCCESS);
         } catch (error: any) {
             Logger.error(error.message);
             return CommonFunction.GetActionResult(400, null, {

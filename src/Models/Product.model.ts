@@ -27,6 +27,7 @@ const ProductSchema = new Schema<Product>({
     category_id: {
         type: String,
         required: true,
+        ref: TAG_DEFINE.SCHEMA.CATEGORY
     },
     rating_point: {
         type: Number,
@@ -34,7 +35,7 @@ const ProductSchema = new Schema<Product>({
     },
     description: {
         type: String,
-        required: true,
+        default: ""
     },
 });
 

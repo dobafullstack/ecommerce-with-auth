@@ -19,6 +19,9 @@ interface Order {
     products: typeof ProductsField[];
     totalPrice: number;
     status: string;
+    name: string;
+    phone: string;
+    address: string;
     createdAt: Date;
     updatedAt?: Date;
 }
@@ -31,11 +34,27 @@ const OrderSchema = new Schema<Order>({
     },
     products: {
         type: [ProductsField],
-        required: true
+        required: true,
     },
     totalPrice: {
         type: Number,
-        required: true
+        required: true,
+    },
+    name: {
+        type: String,
+        required: true,
+    },
+    phone: {
+        type: String,
+        required: true,
+    },
+    address: {
+        type: String,
+        required: true,
+    },
+    status: {
+        type: String,
+        default: "pending",
     },
     createdAt: {
         type: Date,
@@ -46,11 +65,15 @@ const OrderSchema = new Schema<Order>({
         type: Date,
         default: null,
     },
-    status: {
-        type: String,
-        default: "pending",
-    },
 });
+
+OrderSchema.pre<Order>("save", function(next) {
+    const order = this;
+
+    order.updatedAt = new Date();
+
+    next();
+})
 
 const OrderModel = model<Order>(TAG_DEFINE.SCHEMA.ORDER, OrderSchema);
 

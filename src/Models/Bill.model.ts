@@ -45,6 +45,14 @@ const BillSchema = new Schema<Bill>({
     },
 });
 
+BillSchema.pre<Bill>('save', function(next){
+    const bill = this;
+
+    bill.updatedAt = new Date();
+
+    next();
+})
+
 const BillModel = model<Bill>(TAG_DEFINE.SCHEMA.BILL, BillSchema);
 
 export default BillModel;
