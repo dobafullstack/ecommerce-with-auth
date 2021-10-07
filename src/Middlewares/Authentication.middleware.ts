@@ -3,9 +3,6 @@ import jwt from "jsonwebtoken";
 import Logger from "../Configs/logger";
 
 export default async (req: Request, res: Response, next: NextFunction) => {
-    if (req.path.includes("auth") || req.path.includes("product")) {
-        return next();
-    }
 
     const token = req.headers["authorization"]?.split(" ")[1] || "";
 
