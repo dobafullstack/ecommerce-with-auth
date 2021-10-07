@@ -4,6 +4,7 @@ import UserModel from "../Models/User.model";
 import jwt from "jsonwebtoken";
 import md5 from "md5";
 import RoleModel from "../Models/Role.model";
+import CommonFunction from "../Utils/CommonFunction";
 
 export default class AuthService {
     //Login
@@ -13,18 +14,16 @@ export default class AuthService {
 
         try {
             if (!username || !password) {
-                res.status(400).json({
+                return CommonFunction.GetActionResult(400, null, {
                     message: "Bad request",
                 });
-                return;
             }
             const existingUser = await UserModel.findOne({ username });
 
             if (!existingUser || existingUser.password !== password) {
-                res.status(403).json({
-                    message: "Username or password is not correct!",
+                return CommonFunction.GetActionResult(403, null, {
+                    message: "Username or password is not correct",
                 });
-                return;
             }
 
             const token = jwt.sign(
@@ -33,19 +32,17 @@ export default class AuthService {
                 { expiresIn: "1 day" }
             );
 
-            res.status(200).json({
-                token,
-            });
+            return CommonFunction.GetActionResult(200, { token });
         } catch (error: any) {
             Logger.error(error.message);
-            res.status(400).json({
+            return CommonFunction.GetActionResult(400, null, {
                 message: error.message,
             });
         }
     }
 
     //Register
-    public static async RegisterService(req: Request, res: Response){
+    public static async RegisterService(req: Request, res: Response) {
         const admin_role = await RoleModel.findOne({ name: "admin" });
 
         const token = req.headers["authorization"]?.split(" ")[1] || "";
@@ -67,12 +64,12 @@ export default class AuthService {
         try {
             await UserModel.create(req.body);
 
-            res.status(201).json({
+            return CommonFunction.GetActionResult(201, {
                 message: "Register successful",
             });
         } catch (error: any) {
             Logger.error(error.message);
-            res.status(500).json({
+            return CommonFunction.GetActionResult(400, null, {
                 message: error.message,
             });
         }
