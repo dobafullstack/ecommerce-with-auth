@@ -2,18 +2,17 @@ import { Request, Response } from "express";
 import Logger from "../Configs/logger";
 import RoleModel from "../Models/Role.model";
 import lodash from "lodash";
+import CommonFunction from "../Utils/CommonFunction";
 
 export default class RoleService {
     public static async GetAllRolesService(req: Request, res: Response) {
         try {
             const roles = await RoleModel.find();
 
-            res.status(200).json(roles);
+            return CommonFunction.GetActionResult(200, roles);
         } catch ({ message }) {
             Logger.error(message);
-            res.status(403).json({
-                message,
-            });
+            return CommonFunction.GetActionResult(403, null, { message });
         }
     }
 
@@ -22,10 +21,10 @@ export default class RoleService {
         try {
             const role = await RoleModel.findById(role_id);
 
-            res.status(200).json(role);
+            return CommonFunction.GetActionResult(200, role);
         } catch ({ message }) {
             Logger.error(message);
-            res.status(403).json({ message });
+            return CommonFunction.GetActionResult(403, null, { message });
         }
     }
 
@@ -33,10 +32,14 @@ export default class RoleService {
         try {
             await RoleModel.create(req.body);
 
-            res.status(201).json({ message: "Create role success" });
+            return CommonFunction.GetActionResult(201, {
+                message: "Create role success",
+            });
         } catch ({ message }) {
             Logger.error(message);
-            res.status(400).json({ message });
+            return CommonFunction.GetActionResult(400, null, {
+                message,
+            });
         }
     }
 
@@ -48,10 +51,14 @@ export default class RoleService {
 
             lodash.extend(role, req.body);
 
-            res.status(200).json({ message: "Update role success" });
+            return CommonFunction.GetActionResult(200, {
+                message: "Update role success",
+            });
         } catch ({ message }) {
             Logger.error(message);
-            res.status(403).json({ message });
+            return CommonFunction.GetActionResult(400, null, {
+                message,
+            });
         }
     }
 
@@ -61,10 +68,14 @@ export default class RoleService {
         try {
             await RoleModel.findByIdAndDelete(role_id);
 
-            res.status(200).json({ message: "Delete role success" });
+            return CommonFunction.GetActionResult(200, {
+                message: "Delete role success",
+            });
         } catch ({ message }) {
             Logger.error(message);
-            res.status(403).json({ message });
+            return CommonFunction.GetActionResult(400, null, {
+                message,
+            });
         }
     }
 }
